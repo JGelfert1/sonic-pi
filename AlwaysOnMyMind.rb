@@ -24,8 +24,14 @@ live_loop :strings do
 end
 
 
-live_loop :synthriff do
+i = 0
+
+live_loop :synthriff, sync: :drums do
   
+  if i > 1
+    stop
+  end
+  i = (inc i)
   use_synth :dsaw
   
   play_chord chord(:C3, :major, invert: 2)
@@ -50,8 +56,35 @@ live_loop :synthriff do
   sleep 1
   play_chord chord(:G3, :major, invert: 0)
   
-  sleep 0.5
+  sleep 1
+  if i == 2
+    cue :zurStrophe
+  end
 end
+
+
+
+live_loop :strophe, sync: :zurStrophe do
+  
+  
+  
+  use_synth :piano
+  play_pattern_timed [:E4,:F4,:G4], [0.5]
+  sleep 1
+  
+  play_pattern_timed [:F4,:E4, :E4], [0.5]
+  sleep 2
+  play :D4
+  sleep 2
+  play_pattern_timed [:C4,:D4,:E4], [0.5]
+  sleep 1
+  play_pattern_timed [:D4,:C4,:B3, :B3], [0.5]
+  sleep 1.5
+  play :A3
+  sleep 2
+  
+end
+
 
 define :oktbass do |ton, repeats|
   repeats.times do
